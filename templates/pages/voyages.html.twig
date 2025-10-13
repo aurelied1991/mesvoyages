@@ -1,5 +1,58 @@
 {% extends "basefront.html.twig" %}
 
 {% block body %}
-    <h1>Page des voyages</h1>
+    <!-- Crée un tableau html, table applique style de base tableaux Bootstrap, table-striped ajoute fond de couleur alterné-->
+    <table class="table table-striped">
+        <!-- En tête du tableau -->
+        <thead>
+            <!-- tr = une ligne -->
+            <tr>
+                <!--th = cellule d'en tête, text-left = texte aligné à gauche -->
+                <!--text-end = texte aligné à droite, text-center = texte centré -->
+                <!--scope="col" = indique aux lecteur d'écrans que chaque th = une colonne (meilleur accessiblité -->
+                <th class="text-left" scope="col">Ville</th>
+                <th class="text-left" scope="col">Pays</th>
+                <th class="text-end" scope="col">Note</th>
+                <th class="text-center" scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- boucle permet à chaque tour de récupérer dans la variable locale ''visite'', une des lignes contenues dans la variable "visites" envoyée par le controller -->
+            <!-- à partir de la variable "visite" qui est un objet, on peut accéder àa la partie publique de la classe Visite -->
+            {% for visite in visites %}
+                <tr>
+                    <!-- td = cellule standard tableau-->
+                    <td>
+                        <!--text-primary = couleur principale du thème Bootstrap -->
+                        <h5 class="text-primary">
+                            <!-- href = lien cliquable, visite.ville affiche la propriété ville de l'objet visite -->
+                            <a href="#">{{ visite.ville }}</a>
+                        </h5>
+                    </td>
+                    <td>
+                        {{ visite.pays }}
+                    </td>
+                    <td class="text-end">
+                        <strong>
+                            {% if visite.note<10 %}
+                                <!--S'affiche en rouge -->
+                                <div class="text-danger">
+                                    {{ visite.note }}/20
+                                </div>
+                            {% else %}
+                                <!--S'affiche en vert -->
+                                <div class="text-success">
+                                    {{ visite.note }}/20
+                                </div>
+                            {% endif %}
+                        </strong>
+                    </td>
+                    <td class="text-center">
+                        <!--Affiche la date formatée par le contrôleur -->
+                        {{ visite.datecreationstring }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
