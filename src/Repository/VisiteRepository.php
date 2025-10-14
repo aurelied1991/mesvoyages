@@ -15,29 +15,21 @@ class VisiteRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Visite::class);
     }
-
-    //    /**
-    //     * @return Visite[] Returns an array of Visite objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('v.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Visite
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    
+    /**
+     * Retourne tous les enregistrements, triés par rapport au champ passé en paramètre
+     * @param type $champ
+     * @param type $ordre
+     * @return Visite[] (tableau d'objets de type Visite)
+     */
+    public function findAllOrderBy($champ, $ordre): array{
+        //Permet de créer une requête de type "select" (création du curseur), en paramètre alias de la table
+        return $this->createQueryBuilder('v')
+                //Ajout de l'ordre ORDER BY dans requête avec deux paramètres : nom du champ et type de tri
+                ->orderBy('v.'.$champ, $ordre)
+                //Permet d'exécuter la requête
+                ->getQuery()
+                //Permet de récupérer le résultat sous forme d'un tableau d'objet du type de l'entity (ici Visite)
+                ->getResult();
+    }
 }
