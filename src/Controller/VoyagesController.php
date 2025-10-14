@@ -79,4 +79,20 @@ class VoyagesController extends AbstractController {
             'visites' => $visites
         ]);
     }
+    
+    #[Route('/voyages/voyage/{id}', name: 'voyages.showone')]
+    /**
+     * Méthode qui récupère l'id de la visite sélectionnée dans la vue
+     * On utilise la méthode fin directement disponible dans VisiteRepository grâce à héritage
+     * find attend en paramètre l'id de l'enregistrement qu'on veut récup dans la bdd
+     * On retourne à la nouvelle vue, en paramètre, "visite" qui contiendra toutes les infos d'une visite
+     * @param type $id
+     * @return Response
+     */
+    public function showOne($id): Response{
+        $visite = $this->repository->find($id);
+        return $this->render("pages/voyage.html.twig", [
+            'visite' => $visite
+        ]);
+    }
 }

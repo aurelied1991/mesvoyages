@@ -56,7 +56,7 @@
                         <!--text-primary = couleur principale du thème Bootstrap -->
                         <h5 class="text-primary">
                             <!-- href = lien cliquable, visite.ville affiche la propriété ville de l'objet visite -->
-                            <a href="#">{{ visite.ville }}</a>
+                            <a href="{{ path('voyages.showone', {id:visite.id}) }}">{{ visite.ville }}</a>
                         </h5>
                     </td>
                     <td>
