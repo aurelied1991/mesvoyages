@@ -2,10 +2,11 @@
 
 namespace App\Controller;
 
+use App\Repository\VisiteRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\VisiteRepository;
 
 /**
  * Description of VoyagesController
@@ -60,4 +61,22 @@ class VoyagesController extends AbstractController {
         ]);
     }
     
+    
+    #[Route('/voyages/recherche/{champ}', name: 'voyages.findallequal')]
+    /**
+     * Méthode permettant de récupérer les champs du formulaire avec Request, $valeur
+     * récupère le champ recherche du formulaire, puis on récupère dans la variable
+     * $visites les visites filtrées par la méthode findByEqualValue du repository puis
+     * on envoie à la vue les visites à afficher
+     * @param type $champ
+     * @param Request $request
+     * @return Response
+     */
+    public function findAllEqual($champ, Request $request): Response {
+        $valeur = $request->get("recherche");
+        $visites = $this->repository->findByEqualValue($champ, $valeur);
+        return $this->render("pages/voyages.html.twig", [
+            'visites' => $visites
+        ]);
+    }
 }
