@@ -38,7 +38,7 @@
                         {{ visite.datecreationstring }}
                     </td>
                     <td>
-                        <!-- Bouton fait appel à méthode "suppr" et envoit l'id de la visite et permet d'arriver sur page de modification-->
+                        <!-- Bouton fait appel à méthode "edit" et envoit l'id de la visite et permet d'arriver sur page de modification-->
                         <a href="{{ path('admin.voyage.edit', {id:visite.id}) }}" class="btn btn-secondary">Editer</a>
                         <!-- Bouton fait appel à méthode "suppr" et envoit l'id de la visite-->
                         <a href="{{ path('admin.voyage.suppr', {id:visite.id}) }}" class="btn btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer {{ visite.ville }} ?');">Supprimer</a>

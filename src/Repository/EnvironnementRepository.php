@@ -16,28 +16,28 @@ class EnvironnementRepository extends ServiceEntityRepository
         parent::__construct($registry, Environnement::class);
     }
 
-    //    /**
-    //     * @return Environnement[] Returns an array of Environnement objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('e.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Environnement
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    /**
+     * Supprimer un environnement
+     * @param Environnement $environnement
+     * @return void
+     */
+    public function remove(Environnement $environnement): void
+    {
+        //méthode remove permet de gérer suppression temporairement
+        $this->getEntityManager()->remove($environnement);
+        //méthode flush réalise définitivement suppression
+        $this->getEntityManager()->flush();
+    }
+    
+    /**
+     * Ajouter un environnement
+     * @param Environnement $environnement
+     * @return void
+     */
+    public function add(Environnement $environnement): void
+    {
+        //le persist de l'objet visite permet de l'ajouter s'il n'exiset pas encore ou de le modifier s'il existe déjà
+        $this->getEntityManager()->persist($environnement);
+        $this->getEntityManager()->flush();
+    }
 }
