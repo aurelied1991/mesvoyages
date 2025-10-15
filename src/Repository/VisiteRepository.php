@@ -68,4 +68,16 @@ class VisiteRepository extends ServiceEntityRepository
         //méthode flush réalise définitivement suppression
         $this->getEntityManager()->flush();
     }
+    
+    /**
+     * Pour modifier ou ajouter une visite dans la bdd
+     * @param Visite $visite
+     * @return void
+     */
+    public function add(Visite $visite): void
+    {
+        //le persist de l'objet visite permet de l'ajouter s'il n'exiset pas encore ou de le modifier s'il existe déjà
+        $this->getEntityManager()->persist($visite);
+        $this->getEntityManager()->flush();
+    }
 }
