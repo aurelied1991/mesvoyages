@@ -38,7 +38,8 @@ class VoyagesController extends AbstractController {
      * @return Response
      */
     public function index(): Response{
-        // Appel de la méthode findAllOrderBy pour récupère les données du champ datecreation et du plus récent au moins récent
+        // Appel de la méthode findAllOrderBy pour récupère les données du champ 
+        // datecreation et du plus récent au moins récent
         $visites = $this->repository->findAllOrderBy('datecreation', 'DESC');
         // Pour envoyer $visites à la page voyage.html.twig, donc les informations à la vue
         return $this->render("pages/voyages.html.twig", [
@@ -61,8 +62,6 @@ class VoyagesController extends AbstractController {
         ]);
     }
     
-    
-    #[Route('/voyages/recherche/{champ}', name: 'voyages.findallequal')]
     /**
      * Méthode permettant de récupérer les champs du formulaire avec Request, $valeur
      * récupère le champ recherche du formulaire, puis on récupère dans la variable
@@ -72,6 +71,7 @@ class VoyagesController extends AbstractController {
      * @param Request $request
      * @return Response
      */
+    #[Route('/voyages/recherche/{champ}', name: 'voyages.findallequal')]
     public function findAllEqual($champ, Request $request): Response {
         $valeur = $request->get("recherche");
         $visites = $this->repository->findByEqualValue($champ, $valeur);
@@ -80,7 +80,6 @@ class VoyagesController extends AbstractController {
         ]);
     }
     
-    #[Route('/voyages/voyage/{id}', name: 'voyages.showone')]
     /**
      * Méthode qui récupère l'id de la visite sélectionnée dans la vue
      * On utilise la méthode fin directement disponible dans VisiteRepository grâce à héritage
@@ -89,6 +88,7 @@ class VoyagesController extends AbstractController {
      * @param type $id
      * @return Response
      */
+    #[Route('/voyages/voyage/{id}', name: 'voyages.showone')]
     public function showOne($id): Response{
         $visite = $this->repository->find($id);
         return $this->render("pages/voyage.html.twig", [

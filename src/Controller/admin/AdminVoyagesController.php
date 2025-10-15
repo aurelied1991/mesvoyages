@@ -62,7 +62,6 @@ class AdminVoyagesController extends AbstractController {
         return $this->redirectToRoute('admin.voyages');
     }
     
-    #[Route('/admin/edit/{id}', name :'admin.voyage.edit')]
     /**
      * Méthode qui permet de constuire un formulaire selon l'id reçcue et l'envoyer à la vue
      * Second paramètre request contient éventuelle requête POST envoyée par formulaire
@@ -70,6 +69,7 @@ class AdminVoyagesController extends AbstractController {
      * @param Request $request
      * @return Response
      */
+    #[Route('/admin/edit/{id}', name :'admin.voyage.edit')]
     public function edit(int $id, Request $request): Response{
         $visite = $this->repository->find($id);
         //Créer un objet qui va contenir les infos du formulaire
@@ -91,5 +91,32 @@ class AdminVoyagesController extends AbstractController {
         ]);
     }
     
+    /**
+     * 
+     * @param Request $request
+     * @return Response
+     */
+    #[Route('/admin/ajout', name :'admin.voyage.ajout')]
+    public function ajout(Request $request): Response{
+        //crétation d'un nouvel objet de type Visite
+        $visite = new Visite();
+        //Créer un objet qui va contenir les infos du formulaire
+        $formVisite = $this->createForm(VisiteType::class, $visite);
+        
+        //Le formulaire tente de récupérer la requête avec handleRequest
+        $formVisite->handleRequest($request);
+        //Test pour contrôler si formulaire a été soumis et s'il est valide
+        if($formVisite->isSubmitted() && $formVisite->isValid()){
+            //Appel de la méthode add du repository et les modifs seront enregistrées dans la bdd
+            $this->repository->add($visite);
+            //Redirection vers la liste des visites
+            return $this->redirectToRoute('admin.voyages');
+        }
+        
+        return $this->render("admin/admin.voyage.ajout.html.twig", [
+            'visite' => $visite,
+            'formvisite' => $formVisite->createView()
+        ]);
+    }
     
 }
