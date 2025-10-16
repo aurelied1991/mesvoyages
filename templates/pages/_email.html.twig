@@ -1,0 +1,15 @@
+<!-- Page qui permet de présenter le mail au format HTML -->
+<html>
+    <body>
+        <p>
+            Nom : {{ contact.nom }}
+        </p>
+        <p>
+            Email : {{ contact.email }}
+        </p>
+        <p>
+            <!-- Commander |n12br pour que retours à la ligne soient bien gérés-->
+            {{ contact.message |nl2br }}
+        </p>
+    </body>
+</html>
