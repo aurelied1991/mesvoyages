@@ -23,6 +23,21 @@
     </div>
     <div class="col">
         <!-- emplacement image -->
+        <div>
+            {{ form_row(formvisite.imageFile) }}
+        </div>
+        <!-- afficher l'image actuelle s'il y en a une, racine du chemin du site avec fonction "app.request.getBasePath-->
+        <!-- chemin où sont rangées les images se retrouve avec fonction du bundle qui attend en paramètre (nomEntity, nomPropriete de type File-->
+        <!-- ~ permet de gérer la concaténation sous Twig -->
+        <div>
+            Image actuelle
+            {% if visite.imagename %}
+                <img src="{{ app.request.getBasePath()~vich_uploader_asset(visite, 'imageFile') }}"
+                     class="card-img-top" style="width:100%;height:auto;">
+            {% else %}
+                <p>(aucune image)</p>
+            {% endif %}
+        </div>
     </div>
 </div>
 <div class="row">

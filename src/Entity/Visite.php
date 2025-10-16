@@ -7,8 +7,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
 
 #[ORM\Entity(repositoryClass: VisiteRepository::class)]
+#[Vich\Uploadable]
 class Visite
 {
     #[ORM\Id]
@@ -36,6 +42,18 @@ class Visite
 
     #[ORM\Column(nullable: true)]
     private ?int $tempmax = null;
+    
+    #[Vich\UploadableField(mapping: 'visites', fileNameProperty: 'imageName', size: 'imageSize')]
+    private ?File $imageFile = null;
+    
+    #[ORM\Column(nullable: true)]
+    private ?string $imageName = null;
+    
+    #[ORM\Column(nullable: true)]
+    private ?int $imageSize = null;
+    
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
 
     /**
      * @var Collection<int, Environnement>
@@ -169,5 +187,59 @@ class Visite
         $this->environnements->removeElement($environnement);
 
         return $this;
+    }
+    
+    public function getImageFile(): ?File {
+        return $this->imageFile;
+    }
+
+    public function getImageName(): ?string {
+        return $this->imageName;
+    }
+
+    public function getImageSize(): ?int {
+        return $this->imageSize;
+    }
+
+    public function setImageFile(?File $imageFile): void {
+        $this->imageFile = $imageFile;
+        //permet de faire en sorte que le fichier fonctionne même s'il n'y a aucune autre modif
+        if(null !== $imageFile){
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function setImageName(?string $imageName): void {
+        $this->imageName = $imageName;
+    }
+
+    public function setImageSize(?int $imageSize): void {
+        $this->imageSize = $imageSize;
+    }
+    
+    /**
+     * Méthode appelée lors du clic sur le bouton Submit du formulaire
+     * Permet affichage d'un message d'erreur personnalisé si le test non concluant + bloquer soumission formulaire
+     * @param ExecutionContextInterface $context
+     */
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context){
+        $file = $this->getImageFile();
+        if($file != null && $file != ""){
+            //@ évite une erreur d'exécution : si méthode échoue elle retourne false
+            $poids = @filesize($file);
+            if($poids != false && $poids > 512000){
+                $context->buildViolation("Cette image est trop lourde (500Ko max)")
+                        ->atPath('imageFile')
+                        ->addViolation();
+            }
+            //Ne pas confondre avec GetImageSize, renvoie tableau de 7 cases contenant hauteur, largeur, mime...
+            $infosImage = @getimagesize($file);
+            if($infosImage == false){
+                $context->buildViolation("Ce fichier n'est pas une image")
+                        ->atPath('imageFile')
+                        ->addViolation();
+            }
+        }
     }
 }

@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -49,6 +50,11 @@ class VisiteType extends AbstractType
                 'choice_label' => 'nom',
                 'multiple' => true,
                 'required' => false
+            ])
+            //Ajout d'un champ pour sélectionner image
+            ->add('imageFile', Filetype::class, [
+                'required' => false,
+                'label' => 'Sélection image'
             ])
             //ajout d'un bouton pour soumettre le formulaire
             ->add('submit', SubmitType::class, [

@@ -19,6 +19,12 @@
         </div>
         <div>
             <!-- emplacement photo -->
+            {% if visite.imagename %}
+                <img src="{{ app.request.getBasePath()~vich_uploader_asset(visite, 'imageFile') }}"
+                     class="card-img-top" alt="image du voyage" style="width:100%;height:auto;">
+            {% else %}
+                <p>(aucune image)</p>
+            {% endif %}           
         </div>
     </div>
     <div class="row mt-5">
@@ -27,5 +33,5 @@
             <p>
                 {{ visite.avis }}
             </p>
-    </div>
-{% endblock %}
+        </div>
+    {% endblock %}
