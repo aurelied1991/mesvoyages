@@ -80,4 +80,19 @@ class VisiteRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($visite);
         $this->getEntityManager()->flush();
     }
+    
+    /**
+     * Fonction qui permet de retourner le nombre d'enregistrements souhaités
+     * @param type $nombre
+     * @return array
+     */
+    public function findAllLasted($nombre) : array {
+        return $this->createQueryBuilder('v')
+                    //Tri pour avoir les visites les plus récentes en premier
+                    ->orderBy('v.datecreation', 'DESC')
+                    //Pour obtenir seulement un nombre maximal de résultats et pas tous les résultats
+                    ->setMaxResults($nombre)
+                    ->getQuery()
+                    ->getResult();
+    }
 }
