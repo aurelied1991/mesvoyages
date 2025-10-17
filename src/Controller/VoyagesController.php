@@ -72,12 +72,17 @@ class VoyagesController extends AbstractController {
      * @return Response
      */
     #[Route('/voyages/recherche/{champ}', name: 'voyages.findallequal')]
-    public function findAllEqual($champ, Request $request): Response {
-        $valeur = $request->get("recherche");
-        $visites = $this->repository->findByEqualValue($champ, $valeur);
-        return $this->render("pages/voyages.html.twig", [
-            'visites' => $visites
-        ]);
+    public function findAllEqual($champ, Request $request): Response{
+        //Vérifie que le token est valide en faisant un test dessus
+        if($this->isCsrfTokenValid('filtre_'.$champ, $request->get('_token'))){
+            $valeur = $request->get("recherche");
+            $visites = $this->repository->findByEqualValue($champ, $valeur);
+            return $this->render("pages/voyages.html.twig", [
+                'visites' => $visites
+            ]);
+        }
+        //si le test échoue, redirection vers la route principale des voyages
+        return $this->redirectToRoute("voyages");
     }
     
     /**
