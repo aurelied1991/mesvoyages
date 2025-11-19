@@ -12,6 +12,12 @@
     </head>
     <body>
         <!-- en-tête -->
+        <div class="container text-end">
+            <!-- Test sur App User qui permet de savoir si un utilisateur est connecté, si oui, on met lien pour se déconnecter-->
+            {% if app.user %}
+                <a href="{{ path('logout') }}"> Se déconnecter </a>
+            {% endif %}
+        </div>
         {% block top %} {% endblock %}
         <!-- corps -->
         <div class="container">
