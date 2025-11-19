@@ -34,7 +34,7 @@ class AdminVoyagesController extends AbstractController {
     #[Route('/admin', name: 'admin.voyages')]
     
     /**
-     * 
+     *
      * @return Response
      */
     public function index(): Response{
@@ -92,7 +92,7 @@ class AdminVoyagesController extends AbstractController {
     }
     
     /**
-     * 
+     *
      * @param Request $request
      * @return Response
      */

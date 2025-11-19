@@ -31,7 +31,7 @@ class AdminEnvironnementController extends AbstractController {
     }
     
     /**
-     * 
+     *
      * @return Response
      */
     #[Route('/admin/environnements', name: 'admin.environnements')]

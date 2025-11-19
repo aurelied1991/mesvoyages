@@ -22,6 +22,9 @@ class VoyagesController extends AbstractController {
      */
     private $repository;
     
+    const PAGEACCUEIL = "pages/voyages.html.twig";
+    const PAGEVOYAGE = "pages/voyage.html.twig";
+    
     /**
      * Constructeur de la classe
      * @param VisiteRepository $repository
@@ -34,15 +37,15 @@ class VoyagesController extends AbstractController {
     #[Route('/voyages', name: 'voyages')]
     
     /**
-     * 
+     *
      * @return Response
      */
     public function index(): Response{
-        // Appel de la méthode findAllOrderBy pour récupère les données du champ 
+        // Appel de la méthode findAllOrderBy pour récupère les données du champ
         // datecreation et du plus récent au moins récent
         $visites = $this->repository->findAllOrderBy('datecreation', 'DESC');
         // Pour envoyer $visites à la page voyage.html.twig, donc les informations à la vue
-        return $this->render("pages/voyages.html.twig", [
+        return $this->render(self::PAGEACCUEIL, [
             'visites' => $visites
         ]);
     }
@@ -57,7 +60,7 @@ class VoyagesController extends AbstractController {
      */
     public function sort($champ, $ordre): Response{
         $visites = $this->repository->findAllOrderBy($champ, $ordre);
-        return $this->render("pages/voyages.html.twig", [
+        return $this->render(self::PAGEACCUEIL, [
             'visites' => $visites
         ]);
     }
@@ -77,7 +80,7 @@ class VoyagesController extends AbstractController {
         if($this->isCsrfTokenValid('filtre_'.$champ, $request->get('_token'))){
             $valeur = $request->get("recherche");
             $visites = $this->repository->findByEqualValue($champ, $valeur);
-            return $this->render("pages/voyages.html.twig", [
+            return $this->render(self::PAGEACCUEIL, [
                 'visites' => $visites
             ]);
         }
@@ -96,7 +99,7 @@ class VoyagesController extends AbstractController {
     #[Route('/voyages/voyage/{id}', name: 'voyages.showone')]
     public function showOne($id): Response{
         $visite = $this->repository->find($id);
-        return $this->render("pages/voyage.html.twig", [
+        return $this->render(self::PAGEVOYAGE, [
             'visite' => $visite
         ]);
     }
